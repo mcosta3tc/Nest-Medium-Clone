@@ -20,7 +20,6 @@ import { UserModule } from './user/user.module';
         DB_USER: Joi.string().required(),
         DB_PASSWORD: Joi.string().required(),
         DB_NAME: Joi.string().required(),
-        DB_SYNC: Joi.boolean().required(),
         PORT: Joi.number().required(),
       }),
     }),
