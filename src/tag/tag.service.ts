@@ -11,6 +11,6 @@ export class TagService {
   ) {}
 
   async findAll(): Promise<TagEntity[]> {
-    return await this.tagRepository.find();
+    return this.tagRepository.find();
   }
 }
