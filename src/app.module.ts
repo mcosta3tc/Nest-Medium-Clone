@@ -21,6 +21,8 @@ import { UserModule } from './user/user.module';
         DB_PASSWORD: Joi.string().required(),
         DB_NAME: Joi.string().required(),
         PORT: Joi.number().required(),
+        JWT_SECRET: Joi.string().required(),
+        ENTITIES_LOCATION: Joi.string().required(),
       }),
     }),
     TypeOrmModule.forRootAsync({
