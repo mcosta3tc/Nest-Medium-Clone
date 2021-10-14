@@ -1,4 +1,9 @@
-import { Module } from '@nestjs/common';
+import {
+  MiddlewareConsumer,
+  Module,
+  NestModule,
+  RequestMethod,
+} from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TagModule } from './tag/tag.module';
@@ -7,6 +12,7 @@ import * as Joi from '@hapi/joi';
 import { DBConfigurationService } from './database/DBConfiguration.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserModule } from './user/user.module';
+import { AuthMiddleware } from './user/middleware/auth.middleware';
 
 @Module({
   imports: [
@@ -33,4 +39,11 @@ import { UserModule } from './user/user.module';
   controllers: [AppController],
   providers: [AppService, DBConfigurationService],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(AuthMiddleware).forRoutes({
+      path: '*',
+      method: RequestMethod.ALL,
+    });
+  }
+}

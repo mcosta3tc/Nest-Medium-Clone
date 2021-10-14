@@ -63,6 +63,10 @@ export class UserService {
     return userByEmail;
   }
 
+  async findUserById(id: number): Promise<UserEntity> {
+    return this.userRepository.findOne(id);
+  }
+
   private static generateJwt(user: UserEntity): string {
     return sign(
       {
