@@ -7,6 +7,7 @@ import { sign } from 'jsonwebtoken';
 import { UserResponseInterface } from '../type/userResponse.interface';
 import { LoginUserDto } from './dto/loginUser.dto';
 import { compare } from 'bcrypt';
+import { UpdateUserDto } from './dto/updateUser.dto';
 
 @Injectable()
 export class UserService {
@@ -14,6 +15,17 @@ export class UserService {
     @InjectRepository(UserEntity)
     private readonly userRepository: Repository<UserEntity>,
   ) {}
+
+  private static generateJwt(user: UserEntity): string {
+    return sign(
+      {
+        id: user.id,
+        username: user.username,
+        email: user.email,
+      },
+      process.env.JWT_SECRET,
+    );
+  }
 
   async createUser(createUserDto: CreateUserDto): Promise<UserEntity> {
     const userByEmail = await this.userRepository.findOne({
@@ -63,19 +75,17 @@ export class UserService {
     return userByEmail;
   }
 
-  async findUserById(id: number): Promise<UserEntity> {
-    return this.userRepository.findOne(id);
+  async updateUser(
+    userId: number,
+    updateUserDto: UpdateUserDto,
+  ): Promise<UserEntity> {
+    const user = await this.findUserById(userId);
+    Object.assign(user, updateUserDto);
+    return await this.userRepository.save(user);
   }
 
-  private static generateJwt(user: UserEntity): string {
-    return sign(
-      {
-        id: user.id,
-        username: user.username,
-        email: user.email,
-      },
-      process.env.JWT_SECRET,
-    );
+  async findUserById(id: number): Promise<UserEntity> {
+    return this.userRepository.findOne(id);
   }
 
   buildUserResponse(user: UserEntity): UserResponseInterface {
