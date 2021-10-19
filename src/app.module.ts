@@ -13,9 +13,11 @@ import { DBConfigurationService } from './database/DBConfiguration.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserModule } from './user/user.module';
 import { AuthMiddleware } from './user/middleware/auth.middleware';
+import { ArticleModule } from './article/article.module';
 
 @Module({
   imports: [
+    ArticleModule,
     UserModule,
     TagModule,
     ConfigModule.forRoot({
