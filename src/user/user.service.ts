@@ -4,7 +4,7 @@ import { UserEntity } from './user.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { sign } from 'jsonwebtoken';
-import { UserResponseInterface } from '../type/userResponse.interface';
+import { UserResponseInterface } from './types/userResponse.interface';
 import { LoginUserDto } from './dto/loginUser.dto';
 import { compare } from 'bcrypt';
 import { UpdateUserDto } from './dto/updateUser.dto';

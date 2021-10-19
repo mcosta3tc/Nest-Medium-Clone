@@ -10,7 +10,7 @@ import {
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/createUser.dto';
-import { UserResponseInterface } from '../type/userResponse.interface';
+import { UserResponseInterface } from './types/userResponse.interface';
 import { LoginUserDto } from './dto/loginUser.dto';
 import { UserEntity } from './user.entity';
 import { User } from './decorator/user.decorator';
