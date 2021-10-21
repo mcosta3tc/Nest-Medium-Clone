@@ -4,6 +4,7 @@ import { ArticleEntity } from './article.entity';
 import { DeleteResult, Repository } from 'typeorm';
 import { ArticleResponseInterface } from './types/articleResponse.interface';
 import slugify from 'slugify';
+import { CreateArticleDto } from './dto/createArticle.dto';
 
 @Injectable()
 export class ArticleService {
@@ -62,5 +63,26 @@ export class ArticleService {
     }
 
     return this.articleRepository.delete({ slug });
+  }
+
+  async updateArticle(
+    currentUserId: number,
+    slug: string,
+    updatedArticle: CreateArticleDto,
+  ): Promise<ArticleEntity> {
+    const article = await this.findBySlug(slug);
+
+    if (!article) {
+      throw new HttpException('Article does not exist', HttpStatus.NOT_FOUND);
+    }
+
+    if (article.author.id !== currentUserId) {
+      throw new HttpException(
+        'You are not author of the article',
+        HttpStatus.FORBIDDEN,
+      );
+    }
+    Object.assign(article, updatedArticle);
+    return await this.articleRepository.save(article);
   }
 }
