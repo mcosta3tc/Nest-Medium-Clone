@@ -35,12 +35,11 @@ export class ArticleEntity {
 
   @Column({ default: 0 })
   favoritesCounts: number;
+  @ManyToOne(() => UserEntity, (author) => author.articles, { eager: true })
+  author: UserEntity;
 
   @BeforeUpdate()
   updateTimestamp() {
     this.updatedAt = new Date();
   }
-
-  @ManyToOne(() => UserEntity, (author) => author.articles)
-  author: UserEntity;
 }
