@@ -1,16 +1,20 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ArticleEntity } from './article.entity';
-import { DeleteResult, Repository } from 'typeorm';
+import { DeleteResult, getRepository, Repository } from 'typeorm';
 import { ArticleResponseInterface } from './types/articleResponse.interface';
 import slugify from 'slugify';
 import { CreateArticleDto } from './dto/createArticle.dto';
+import { AllArticlesResponseInterface } from './types/AllArticlesResponseInterface';
+import { UserEntity } from '../user/user.entity';
 
 @Injectable()
 export class ArticleService {
   constructor(
     @InjectRepository(ArticleEntity)
     private readonly articleRepository: Repository<ArticleEntity>,
+    @InjectRepository(UserEntity)
+    private readonly userRepository: Repository<UserEntity>,
   ) {}
 
   private static getSlug(title: string): string {
@@ -84,5 +88,44 @@ export class ArticleService {
     }
     Object.assign(article, updatedArticle);
     return await this.articleRepository.save(article);
+  }
+
+  async findAllArticles(
+    currentUserId: number,
+    query: any,
+  ): Promise<AllArticlesResponseInterface> {
+    const queryBuilder = await getRepository(ArticleEntity)
+      .createQueryBuilder('articles')
+      .leftJoinAndSelect('articles.author', 'author');
+    const allArticlesCount = await queryBuilder.getCount();
+
+    queryBuilder.orderBy('articles.createdAt', 'DESC');
+
+    if (query.limit) {
+      queryBuilder.limit(query.limit);
+    }
+
+    if (query.offset) {
+      queryBuilder.offset(query.offset);
+    }
+
+    if (query.tag) {
+      queryBuilder.andWhere('articles.tagList LIKE :tag', {
+        tag: `%${query.tag}%`,
+      });
+    }
+
+    if (query.author) {
+      const author = await this.userRepository.findOne({
+        username: query.author,
+      });
+      queryBuilder.andWhere('articles.authorId = :id', {
+        id: author.id,
+      });
+    }
+
+    const allArticles = await queryBuilder.getMany();
+
+    return { allArticles, allArticlesCount };
   }
 }

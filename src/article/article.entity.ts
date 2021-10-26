@@ -35,7 +35,7 @@ export class ArticleEntity {
 
   @Column({ default: 0 })
   favoritesCounts: number;
-  @ManyToOne(() => UserEntity, (author) => author.articles, { eager: true })
+  @ManyToOne(() => UserEntity, (user) => user.articles, { eager: true })
   author: UserEntity;
 
   @BeforeUpdate()
