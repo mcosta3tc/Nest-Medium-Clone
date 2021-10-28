@@ -70,6 +70,27 @@ export class ArticleService {
     return article;
   }
 
+  async removeArticleFromFavorite(
+    currentUserId: number,
+    slug: string,
+  ): Promise<ArticleEntity> {
+    const article = await this.findBySlug(slug);
+    const user = await this.userRepository.findOne(currentUserId, {
+      relations: ['favorites'],
+    });
+    const articleIndex = user.favorites.findIndex(
+      (articleInFavorites) => articleInFavorites.id === article.id,
+    );
+    if (articleIndex >= 0) {
+      console.log(articleIndex);
+      user.favorites.splice(articleIndex, 1);
+      article.favoritesCounts--;
+      await this.userRepository.save(user);
+      await this.articleRepository.save(article);
+    }
+    return article;
+  }
+
   async deleteBySlug(
     currentUserId: number,
     slug: string,
