@@ -35,6 +35,7 @@ export class ArticleEntity {
 
   @Column({ default: 0 })
   favoritesCounts: number;
+
   @ManyToOne(() => UserEntity, (user) => user.articles, { eager: true })
   author: UserEntity;
 
