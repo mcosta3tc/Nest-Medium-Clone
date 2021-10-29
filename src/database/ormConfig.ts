@@ -1,4 +1,4 @@
-export = {
+const ormConfig = {
   host: process.env.DB_HOST,
   type: 'postgres',
   port: process.env.DB_PORT,
@@ -12,3 +12,4 @@ export = {
     migrationsDir: process.env.MIGRATION_DIR,
   },
 };
+export default ormConfig;
