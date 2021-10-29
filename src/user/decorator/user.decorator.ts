@@ -5,7 +5,7 @@ export const User = createParamDecorator(
     const request = context.switchToHttp().getRequest();
 
     if (!request.user) {
-      null;
+      return null;
     }
 
     if (data) {

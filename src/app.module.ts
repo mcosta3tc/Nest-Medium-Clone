@@ -14,12 +14,14 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserModule } from './user/user.module';
 import { AuthMiddleware } from './user/middleware/auth.middleware';
 import { ArticleModule } from './article/article.module';
+import { ProfileModule } from './profile/profile.module';
 
 @Module({
   imports: [
     ArticleModule,
     UserModule,
     TagModule,
+    ProfileModule,
     ConfigModule.forRoot({
       isGlobal: true,
       validationSchema: Joi.object({
