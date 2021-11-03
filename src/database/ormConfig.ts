@@ -1,3 +1,4 @@
+console.log('in config file');
 const ormConfig = {
   host: process.env.DB_HOST,
   type: 'postgres',
