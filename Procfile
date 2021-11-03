@@ -1,3 +1,3 @@
 web: yarn start:prod
-create: yarn db:create
-migrate: yarn db:migrate
+create: yarn db:create-prod
+migrate: yarn db:migrate-prod
