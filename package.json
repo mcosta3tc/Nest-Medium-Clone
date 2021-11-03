@@ -20,9 +20,12 @@
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "typeorm": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js --config src/database/ormConfig.ts",
+    "typeorm-prod": "./node_modules/typeorm/cli.js --config dist/database/ormConfig.js",
     "db:drop": "yarn typeorm schema:drop",
     "db:create": "yarn typeorm migration:generate -- -n",
+    "db:create-prod": "yarn typeorm-prod migration:generate -- -n",
     "db:migrate": "yarn typeorm migration:run",
+    "db:migrate-prod": "yarn typeorm-prod migration:run",
     "db:seed": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js --config src/database/ormSeedConfig.ts migration:run"
   },
   "dependencies": {
