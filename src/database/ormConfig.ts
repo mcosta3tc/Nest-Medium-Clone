@@ -11,5 +11,7 @@ const ormConfig = {
   cli: {
     migrationsDir: process.env.MIGRATION_DIR,
   },
+  url: process.env.DATABASE_URL,
+  ssl: { rejectUnauthorized: false },
 };
 export default ormConfig;
