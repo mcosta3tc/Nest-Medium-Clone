@@ -16,6 +16,8 @@ export class DBConfigurationService implements TypeOrmOptionsFactory {
       database: this.configService.get('DB_NAME'),
       entities: [__dirname + this.configService.get('ENTITIES_LOCATION')],
       synchronize: false,
+      url: process.env.DATABASE_URL,
+      ssl: { rejectUnauthorized: false },
     };
   }
 }
