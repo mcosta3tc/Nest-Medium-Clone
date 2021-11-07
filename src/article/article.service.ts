@@ -139,7 +139,7 @@ export class ArticleService {
     const queryBuilder = await getRepository(ArticleEntity)
       .createQueryBuilder('articles')
       .leftJoinAndSelect('articles.author', 'author');
-    const allArticlesCount = await queryBuilder.getCount();
+    const articlesCount = await queryBuilder.getCount();
 
     queryBuilder.orderBy('articles.createdAt', 'DESC');
 
@@ -166,8 +166,8 @@ export class ArticleService {
       });
     }
 
-    const allArticles = await queryBuilder.getMany();
+    const articles = await queryBuilder.getMany();
 
-    return { allArticles, allArticlesCount };
+    return { articles, articlesCount };
   }
 }
